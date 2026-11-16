@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Highschool English Practice</title>
+<meta name="description" content="Vocabulary, grammar, unseens, movies and games for high school English.">
+<meta name="theme-color" content="#14244d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="English Practice">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+  :root{ --navy:#14244d; --bg:#eef2f9; }
+  html,body{ margin:0; height:100%; background:var(--bg); overflow:hidden; }
+  body{ padding-top:env(safe-area-inset-top,0px); box-sizing:border-box; font:16px system-ui,-apple-system,Segoe UI,Roboto,sans-serif; color:var(--navy); }
+  iframe{ position:absolute; inset:env(safe-area-inset-top,0px) 0 0 0; width:100%; height:calc(100% - env(safe-area-inset-top,0px)); border:0; background:var(--bg); }
+  .splash{ position:fixed; inset:0; display:grid; place-items:center; background:var(--navy); color:#fff; z-index:5; transition:opacity .5s; text-align:center; padding:24px; }
+  .splash img{ width:120px; height:120px; border-radius:50%; border:4px solid #fff; box-shadow:0 10px 30px rgba(0,0,0,.35); animation:b 1.2s ease-in-out infinite; }
+  .splash b{ display:block; font-size:22px; margin-top:16px; } .splash span{ opacity:.8; font-size:15px; }
+  .splash.hide{ opacity:0; pointer-events:none; }
+  @keyframes b{ 50%{ transform:translateY(-8px); } }
+  .msg{ position:fixed; inset:0; display:none; place-items:center; background:var(--bg); z-index:6; padding:24px; text-align:center; }
+  .msg.on{ display:grid; } .msg button{ font:600 17px system-ui; background:#2557d6; color:#fff; border:0; border-radius:12px; padding:12px 22px; margin-top:14px; }
+</style>
+</head>
+<body>
+<div class="splash" id="splash"><div><img src="icon-192.png" alt=""><b>Highschool English Practice</b><span>Loading… let’s go, champ! 💪</span></div></div>
+<div class="msg" id="off"><div><div style="font-size:54px">📶</div><b style="font-size:20px">No internet connection</b><div>Connect to Wi-Fi or mobile data and try again.</div><button onclick="location.reload()">Try again</button></div></div>
+<script>
+/* ✏️ THE ONLY LINE TO CHANGE: the link of your Apps Script site (it ends with /exec) */
+var APP_URL = 'PASTE_YOUR_LINK_HERE';
+
+(function(){
+  var splash=document.getElementById('splash'), off=document.getElementById('off');
+  if(!/^https:\/\/script\.google\.com\/.+\/exec/.test(APP_URL)){
+    splash.innerHTML='<div><b>Almost ready!</b><span>Paste the link of the site (it ends with /exec) in index.html, in the line APP_URL.</span></div>';
+    return;
+  }
+  if(navigator.onLine===false){ off.classList.add('on'); splash.classList.add('hide'); }
+  var f=document.createElement('iframe');
+  f.src=APP_URL+(location.search||'');          // ?page=teacher works too
+  f.allow='autoplay; clipboard-write; fullscreen';
+  f.setAttribute('allowfullscreen','');
+  f.title='Highschool English Practice';
+  f.onload=function(){ setTimeout(function(){ splash.classList.add('hide'); },300); };
+  document.body.appendChild(f);
+  setTimeout(function(){ splash.classList.add('hide'); },12000);
+  window.addEventListener('offline',function(){ off.classList.add('on'); });
+  window.addEventListener('online',function(){ off.classList.remove('on'); });
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function(){});
+})();
+</script>
+</body>
+</html>
